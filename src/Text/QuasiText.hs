@@ -7,6 +7,7 @@ import Language.Haskell.TH.Quote
 import Language.Haskell.TH.Syntax
 import Language.Haskell.TH
 import Language.Haskell.Meta (parseExp)
+import Instances.TH.Lift ()
 
 import Data.Attoparsec.Text
 import qualified Data.Text as T 
@@ -16,9 +17,6 @@ import Data.Char
 import Data.Monoid
 import Control.Applicative
                         
-instance Lift Text where
-    lift = litE . stringL . T.unpack
-
 data Chunk 
     = T Text -- ^ text
     | E Text -- ^ expression
@@ -34,7 +32,7 @@ instance Textish Text where
 
 instance Textish [Char] where
     {-# INLINE toText #-}
-    toText x = T.pack x
+    toText = T.pack
 
 instance Show a => Textish a where 
     {-# INLINE toText #-}
